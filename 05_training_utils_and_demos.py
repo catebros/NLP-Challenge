@@ -4,6 +4,8 @@
 # GPT demo intentionally left empty.
 # ============================================================
 
+import torch
+
 @torch.no_grad()
 def estimate_bert_loss(model, eval_iters=20):
     model.eval()

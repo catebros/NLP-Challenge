@@ -3,6 +3,8 @@
 # Batch helpers for language modeling, classification, and seq2seq.
 # ============================================================
 
+import torch
+
 def get_lm_batch(split="train"):
     """
     Batch for GPT-style language modeling.

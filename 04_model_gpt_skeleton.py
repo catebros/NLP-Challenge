@@ -7,6 +7,10 @@
 # ============================================================
 
 
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
 class TinyGPT(nn.Module):
     """
     Decoder-only transformer with a language-modeling head.

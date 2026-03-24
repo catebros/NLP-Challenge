@@ -8,6 +8,9 @@
 
 
 
+import random
+import torch
+
 SEED = 42
 random.seed(SEED)
 torch.manual_seed(SEED)
@@ -73,8 +76,8 @@ print("Vocabulary:", chars)
 # Leave these blank for students.
 # ============================================================
 
-batch_size =
-context_length =
-d_model =
-n_layers =
-learning_rate =
+batch_size = 16
+context_length = 32
+d_model = 64
+n_layers = 2
+learning_rate = 1e-3
