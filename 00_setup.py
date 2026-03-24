@@ -68,6 +68,7 @@ print("Vocabulary:", chars)
 
 # ============================================================
 # Hyperparameters
+# Leave these blank for students.
 # ============================================================
 
 batch_size = 32

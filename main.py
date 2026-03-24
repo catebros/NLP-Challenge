@@ -7,12 +7,11 @@ Single-file driver that imports all fragments and runs all demos.
 import math
 import random
 from typing import Optional
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-FRAGMENTS = [
+SCRIPTS = [
     "00_setup.py",
     "01_batching.py",
     "02_core_modules.py",
@@ -21,6 +20,6 @@ FRAGMENTS = [
     "05_training_utils_and_demos.py",
 ]
 
-for path in FRAGMENTS:
+for path in SCRIPTS:
     with open(path, "r", encoding="utf-8") as f:
         exec(f.read(), globals())

@@ -1,8 +1,10 @@
 # ============================================================
 # 04_model_gpt_skeleton.py
-# TinyGPT model
+# TinyGPT scaffold
+# Students should complete the forward pass and generation
+# functions by mirroring TinyBERT and adapting to
+# autoregressive language modeling.
 # ============================================================
-
 
 import torch
 import torch.nn as nn
@@ -53,18 +55,27 @@ class TinyGPT(nn.Module):
         """
         B, T = idx.shape
 
+        # 1. Compute token embeddings
         tok_emb = self.token_embedding(idx)
+        # 2. Build position indices
         pos = torch.arange(T, device=idx.device)
+        # 3. Compute positional embeddings
         pos_emb = self.position_embedding(pos)
-
+        # 4. Add token and positional embeddings
         x = tok_emb + pos_emb
+        # 5. Pass through decoder blocks
         x = self.blocks(x)
+        # 6. Apply final layer norm
         x = self.ln_f(x)
+        # 7. Project to vocabulary logits
         logits = self.lm_head(x)
 
         loss = None
 
         if targets is not None:
+            # Flatten logits and targets so they can be used
+            # with cross-entropy for next-token prediction.
+            
             B, T, V = logits.shape
             logits_flat = logits.view(B * T, V)
             targets_flat = targets.view(B * T)
@@ -91,6 +102,12 @@ class TinyGPT(nn.Module):
             Extended sequence
         """
         for _ in range(max_new_tokens):
+            # 1. Keep only the last self.context_length tokens
+            # 2. Run the model forward
+            # 3. Keep logits from the last time step
+            # 4. Choose the most probable next token
+            # 5. Append it to idx
+            
             idx_cond = idx[:, -self.context_length:]
             logits, _ = self(idx_cond)
             logits_last = logits[:, -1, :]
@@ -107,6 +124,14 @@ class TinyGPT(nn.Module):
         temperature > 1.0 makes output more random.
         """
         for _ in range(max_new_tokens):
+            # 1. Keep only the last self.context_length tokens
+            # 2. Run the model forward
+            # 3. Keep logits from the last time step
+            # 4. Divide logits by temperature
+            # 5. Convert to probabilities with softmax
+            # 6. Sample the next token
+            # 7. Append it to idx
+
             idx_cond = idx[:, -self.context_length:]
             logits, _ = self(idx_cond)
             logits_last = logits[:, -1, :] / temperature
@@ -122,6 +147,17 @@ class TinyGPT(nn.Module):
         keep only the k most likely tokens and sample from them.
         """
         for _ in range(max_new_tokens):
+            # Suggested steps:
+            # 1. Keep only the last self.context_length tokens
+            # 2. Run the model forward
+            # 3. Keep logits from the last time step and scale by temperature
+            # 4. Extract the top-k logits and indices
+            # 5. Build filtered logits filled with -inf
+            # 6. Put back the top-k values in their original positions
+            # 7. Softmax the filtered logits
+            # 8. Sample the next token
+            # 9. Append it to idx
+            
             idx_cond = idx[:, -self.context_length:]
             logits, _ = self(idx_cond)
             logits_last = logits[:, -1, :] / temperature

@@ -1,6 +1,7 @@
 # ============================================================
 # 05_training_utils_and_demos.py
-# Training utilities and demos for BERT, BART, and GPT.
+# Full helpers and demos for BERT and BART.
+# GPT demo intentionally left empty.
 # ============================================================
 
 import torch
@@ -44,6 +45,9 @@ def estimate_bart_loss(model, eval_iters=20):
 
 @torch.no_grad()
 def estimate_gpt_loss(model, eval_iters=20):
+    """
+    Students may use this function once TinyGPT is complete.
+    """
     model.eval()
     out = {}
     for split in ["train", "val"]:
@@ -129,13 +133,15 @@ for step in range(101):
 
 
 # ============================================================
-# GPT demo
+# GPT demo (empty on purpose)
 # ============================================================
 
 print("\n" + "=" * 60)
 print("GPT-LIKE DEMO")
 print("=" * 60)
 
+
+# 1. Instantiate TinyGPT.
 gpt_model = TinyGPT(
     vocab_size=vocab_size,
     d_model=d_model,
@@ -143,10 +149,13 @@ gpt_model = TinyGPT(
     n_layers=n_layers
 ).to(device)
 
+# 2. Create an optimizer.
 gpt_optimizer = torch.optim.Adam(gpt_model.parameters(), lr=learning_rate)
 
+# 3. Train the model with get_lm_batch().
 for step in range(201):
     if step % 50 == 0:
+        # 4. Evaluate it with estimate_gpt_loss().
         losses = estimate_gpt_loss(gpt_model, eval_iters=10)
         print(
             f"Step {step:3d} | "
@@ -161,22 +170,24 @@ for step in range(201):
     loss.backward()
     gpt_optimizer.step()
 
-# --- Generation ---
+# 5. Generate text with:
+#       - temperature sampling
+#       - top-k sampling
+#       - beam search
 seed_text = "Natural "
 seed_ids = torch.tensor([encode(seed_text)], dtype=torch.long, device=device)
 
-print("\n--- Greedy decoding ---")
+# 6. Compare the outputs qualitatively.
+print("\nGreedy decoding ")
 greedy_out = gpt_model.generate_greedy(seed_ids.clone(), max_new_tokens=150)
 print(decode(greedy_out[0].tolist()))
-
-print("\n--- Temperature sampling (T=0.5) ---")
+print("\nTemperature sampling (T=0.5)")
 temp_out = gpt_model.generate_temperature(seed_ids.clone(), max_new_tokens=150, temperature=0.5)
 print(decode(temp_out[0].tolist()))
 
-print("\n--- Temperature sampling (T=1.5) ---")
+print("\nTemperature sampling (T=1.5)")
 temp_out = gpt_model.generate_temperature(seed_ids.clone(), max_new_tokens=150, temperature=1.5)
 print(decode(temp_out[0].tolist()))
-
-print("\n--- Top-k sampling (k=5, T=1.0) ---")
+print("\nTop-k sampling (k=5, T=1.0)")
 topk_out = gpt_model.generate_top_k(seed_ids.clone(), max_new_tokens=150, temperature=1.0, k=5)
 print(decode(topk_out[0].tolist()))
