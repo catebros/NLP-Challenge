@@ -1,7 +1,6 @@
 # ============================================================
 # 03_models_bert_bart.py
-# Full TinyBERT and TinyBART models.
-# Students can mirror these for TinyGPT.
+# TinyBERT and TinyBART models.
 # ============================================================
 
 import torch

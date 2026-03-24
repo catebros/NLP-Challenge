@@ -1,8 +1,6 @@
 # ============================================================
 # 02_core_modules.py
 # Core transformer modules
-# Attention is fully implemented.
-# Other blocks remain partially scaffolded for the activity.
 # ============================================================
 
 
@@ -117,8 +115,6 @@ class DecoderBlock(nn.Module):
     """
     GPT-like block:
     masked self-attention + feedforward.
-    Students should complete the forward pass
-    by mirroring the EncoderBlock structure.
     """
     def __init__(self, d_model, context_length):
         super().__init__()
@@ -128,14 +124,8 @@ class DecoderBlock(nn.Module):
         self.ffwd = FeedForward(d_model)
 
     def forward(self, x):
-        # TODO:
-        # 1. Apply layer norm before masked self-attention
-        # 2. Add the residual connection
-        # 3. Apply layer norm before feedforward
-        # 4. Add the residual connection
-
-        # x = ...
-        # x = ...
+        x = x + self.self_attn(self.ln1(x))
+        x = x + self.ffwd(self.ln2(x))
         return x
 
 
@@ -146,7 +136,6 @@ class EncoderDecoderBlock(nn.Module):
     2. cross-attention to encoder output
     3. feedforward
 
-    Students should complete the forward pass.
     """
     def __init__(self, d_model, context_length):
         super().__init__()
@@ -161,12 +150,7 @@ class EncoderDecoderBlock(nn.Module):
         self.ffwd = FeedForward(d_model)
 
     def forward(self, x, encoder_out):
-        # TODO:
-        # 1. Apply causal self-attention with residual connection
-        # 2. Apply cross-attention using encoder_out as context
-        # 3. Apply feedforward with residual connection
-
-        # x = ...
-        # x = ...
-        # x = ...
+        x = x + self.self_attn(self.ln1(x))
+        x = x + self.cross_attn(self.ln2(x), context=encoder_out)
+        x = x + self.ffwd(self.ln3(x))
         return x

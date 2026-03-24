@@ -1,8 +1,8 @@
-# ============================================================
-# main.py
-# Main driver: imports all required modules, then loads and
-# executes the course fragments in a shared namespace.
-# ============================================================
+"""
+Transformer Architectures: BERT -> GPT -> BART
+===============================================
+Single-file driver that imports all fragments and runs all demos.
+"""
 
 import math
 import random

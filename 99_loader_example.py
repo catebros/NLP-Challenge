@@ -14,12 +14,12 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 FRAGMENTS = [
-    "fragments/00_setup.py",
-    "fragments/01_batching.py",
-    "fragments/02_core_modules.py",
-    "fragments/03_models_bert_bart.py",
-    "fragments/04_model_gpt_skeleton.py",
-    "fragments/05_training_utils_and_demos.py",
+    "00_setup.py",
+    "01_batching.py",
+    "02_core_modules.py",
+    "03_models_bert_bart.py",
+    "04_model_gpt_skeleton.py",
+    "05_training_utils_and_demos.py",
 ]
 
 for path in FRAGMENTS:
